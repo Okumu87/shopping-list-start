@@ -2,10 +2,13 @@ const itemForm = document.getElementById("item-form");
 const itemInput = document.getElementById("item-input");
 const itemList = document.getElementById("item-list");
 const clearBtn = document.getElementById("clear");
+const itemFilter = document.getElementById("filter");
 
 //Adding items to shopping list
 
 // functions
+
+//adding list item
 
 function addItem(e) {
   e.preventDefault();
@@ -28,7 +31,13 @@ function addItem(e) {
 
   li.appendChild(button);
 
+  //Add li to the DOM
+
   itemList.appendChild(li);
+
+  //checkUI for li.value
+
+  checkUI();
   itemInput.value = "";
 }
 
@@ -50,7 +59,14 @@ function createIcon(classes) {
 
 function removeItem(e) {
   if (e.target.parentElement.classList.contains("remove-item")) {
-    e.target.parentElement.parentElement.remove();
+    //to confirm delete li
+    if (confirm("are you sure ")) {
+      e.target.parentElement.parentElement.remove();
+
+      //clear UI
+
+      checkUI();
+    }
   }
 }
 
@@ -60,9 +76,29 @@ function clearItems() {
   while (itemList.firstChild) {
     itemList.removeChild(itemList.firstChild);
   }
+
+  //clear UI
+
+  checkUI();
+}
+
+//Clearing UI state clear all button and filter input
+
+function checkUI() {
+  //to take new items define value.li in the function scope
+  const items = itemList.querySelectorAll("li");
+  if (items.length === 0) {
+    clearBtn.style.display = "none";
+    itemFilter.style.display = "none";
+  } else {
+    clearBtn.style.display = "block";
+    itemFilter.style.display = "block";
+  }
 }
 
 // Event Listeners
+
+//adding items
 
 itemForm.addEventListener("submit", addItem);
 
@@ -72,3 +108,7 @@ itemList.addEventListener("click", removeItem);
 
 //clearing items
 clearBtn.addEventListener("click", clearItems);
+
+//running function when page loads
+
+checkUI();
