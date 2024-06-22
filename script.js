@@ -85,13 +85,11 @@ function clearItems() {
 //filterItems function
 
 function filterItems(e) {
-  //to take new items define value.li in the function scope
   const items = itemList.querySelectorAll("li");
-  const text = e.target.value.toLowercase();
+  const text = e.target.value.toLowerCase();
 
   items.forEach((item) => {
     const itemName = item.firstChild.textContent.toLowerCase();
-
     if (itemName.indexOf(text) != -1) {
       item.style.display = "flex";
     } else {
