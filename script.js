@@ -39,6 +39,15 @@ function onAddItemSubmit(e) {
     const itemToEdit = itemList.querySelector(".edit-mode");
 
     removeItemFromStorage(itemToEdit.textContent);
+    itemToEdit.classList.remove("edit-mode");
+    itemToEdit.remove();
+    isEditMode = false;
+    //avoiding double input entries
+  } else {
+    if (checkIfItemExists(newItem)) {
+      alert("This item already exists ");
+      return;
+    }
   }
 
   //Create list item
@@ -135,6 +144,13 @@ function onClickItem(e) {
   }
 }
 
+//function not to input double items
+
+function checkIfItemExists(item) {
+  const itemsFromStorage = getItemsFromStorage();
+  return itemsFromStorage.includes(item);
+}
+
 //edit stat function
 
 function setItemToEdit(item) {
@@ -209,6 +225,10 @@ function filterItems(e) {
 //Clearing UI state clear all button and filter input
 
 function checkUI() {
+  //clearing input after edit
+
+  itemInput.value = "";
+
   //to take new items define value.li in the function scope
   const items = itemList.querySelectorAll("li");
   if (items.length === 0) {
@@ -218,6 +238,13 @@ function checkUI() {
     clearBtn.style.display = "block";
     itemFilter.style.display = "block";
   }
+
+  // After editing UI reset of formBtn
+
+  formBtn.innerHTML = '<i class = "fa-solid fa-plus"></i> Add Item';
+  formBtn.style.backgroundColor = "#333";
+
+  isEditMode = false;
 }
 
 //initialize app
