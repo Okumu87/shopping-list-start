@@ -113,19 +113,36 @@ function getItemsFromStorage() {
   return itemsFromStorage;
 }
 
-//removing function
+//on click item
 
 function onClickItem(e) {
   if (e.target.parentElement.classList.contains("remove-item")) {
-    //to confirm delete li
-    if (confirm("are you sure ")) {
-      e.target.parentElement.parentElement.remove();
-
-      //clear UI
-
-      checkUI();
-    }
+    removeItem(e.target.parentElement.parentElement);
   }
+}
+
+//removing function
+
+function removeItem(item) {
+  if (confirm("Are you sure?")) {
+    // Remove item from Dom
+    item.remove();
+
+    //Remove item from storage
+
+    removeItemFromStorage(item.textContent);
+  }
+}
+
+//remove item from storage
+
+function removeItemFromStorage(item) {
+  let itemsFromStorage = getItemsFromStorage();
+  //Filter out item to be removed
+  itemsFromStorage = itemsFromStorage.filter((i) => i !== item);
+
+  //reset to local storage
+  localStorage.setItem("items", JSON.stringify(itemsFromStorage));
 }
 
 //clearing function
@@ -134,6 +151,9 @@ function clearItems() {
   while (itemList.firstChild) {
     itemList.removeChild(itemList.firstChild);
   }
+
+  // clear from local storage
+  localStorage.removeItem("items");
 
   //clear UI
 
