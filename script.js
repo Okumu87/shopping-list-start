@@ -26,11 +26,19 @@ function onAddItemSubmit(e) {
 
   const newItem = itemInput.value;
 
-  //validation
+  //validate Input
 
   if (newItem === "") {
     alert("Empty add item");
     return;
+  }
+
+  //check for edit mode
+
+  if (isEditMode) {
+    const itemToEdit = itemList.querySelector(".edit-mode");
+
+    removeItemFromStorage(itemToEdit.textContent);
   }
 
   //Create list item
